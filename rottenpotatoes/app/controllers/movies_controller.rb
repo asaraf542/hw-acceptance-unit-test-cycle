@@ -30,6 +30,19 @@ class MoviesController < ApplicationController
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
   end
+  
+    
+  def director
+    mov = Movie.find(params[:id])
+    if mov.director != nil 
+      if mov.director != ""
+        @movies = Movie.with_director(mov.director)
+      end 
+    else
+      flash[:notice] = "'#{mov.title}' has no director info."
+      redirect_to movies_path
+    end
+  end
 
   def destroy
     @movie = Movie.find(params[:id])
