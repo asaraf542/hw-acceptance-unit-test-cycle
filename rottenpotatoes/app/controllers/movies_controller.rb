@@ -32,14 +32,23 @@ class MoviesController < ApplicationController
   end
   
     
+#   def director
+#     mov = Movie.find(params[:id])
+#     if mov.director != nil 
+#       if mov.director != ""
+#         @movies = Movie.with_director(mov.director)
+#       end 
+#     else
+#       flash[:notice] = "'#{mov.title}' has no director info."
+#       redirect_to movies_path
+#     end
+#   end
   def director
-    mov = Movie.find(params[:id])
-    if mov.director != nil 
-      if mov.director != ""
-        @movies = Movie.with_director(mov.director)
-      end 
+    m = Movie.find(params[:id])
+    if m.director != "" and m.director != nil
+      @movies = Movie.with_director(m.director)
     else
-      flash[:notice] = "'#{mov.title}' has no director info."
+      flash[:notice] = "'#{m.title}' has no director info."
       redirect_to movies_path
     end
   end
