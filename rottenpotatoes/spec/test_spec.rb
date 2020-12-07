@@ -11,6 +11,25 @@ RSpec.describe "Movies", type: :request do
 end
 
 RSpec.describe "Movies", type: :request do
+  describe "GET /movies/director/2" do
+    it "works! well" do
+      Movie.create!(id: 1, title: "Aladdin", rating: "G", description: nil, director: "Me")
+      Movie.create!(id: 2, title: "Aladin1", rating: "G", description: nil, director: "Him")
+      Movie.create!(id: 3, title: "Aladin2", rating: "G", description: nil, director: "Me")
+      Movie.create!(id: 4, title: "Aladin3", rating: "G", description: nil, director: "Him")
+      Movie.create!(id: 5, title: "Aladin4", rating: "G", description: nil, director: "Me")
+      get search_director_path({id: 2})
+      expect(response).to be_success
+      expect(response.body).not_to include("Aladdin")
+      expect(response.body).not_to include("Aladin2")
+      expect(response.body).not_to include("Aladin4")
+      expect(response.body).to include("Aladin1")
+      expect(response.body).to include("Aladin3")
+    end
+  end
+end
+
+RSpec.describe "Movies", type: :request do
   describe "GET /movies/director/1" do
     it "works! well" do
       Movie.create!(id: 1, title: "Aladdin", rating: "G", description: nil, director: "Me")
@@ -29,24 +48,6 @@ RSpec.describe "Movies", type: :request do
   end
 end
 
-RSpec.describe "Movies", type: :request do
-  describe "GET /movies/director/2" do
-    it "works! well" do
-      Movie.create!(id: 1, title: "Aladdin", rating: "G", description: nil, director: "Me")
-      Movie.create!(id: 2, title: "Aladin1", rating: "G", description: nil, director: "Him")
-      Movie.create!(id: 3, title: "Aladin2", rating: "G", description: nil, director: "Me")
-      Movie.create!(id: 4, title: "Aladin3", rating: "G", description: nil, director: "Him")
-      Movie.create!(id: 5, title: "Aladin4", rating: "G", description: nil, director: "Me")
-      get search_director_path({id: 2})
-      expect(response).to be_success
-      expect(response.body).not_to include("Aladdin")
-      expect(response.body).not_to include("Aladin2")
-      expect(response.body).not_to include("Aladin4")
-      expect(response.body).to include("Aladin1")
-      expect(response.body).to include("Aladin3")
-    end
-  end
-end
 
 RSpec.describe "Movies", type: :request do
   describe "GET /movies/director/1" do
@@ -111,14 +112,6 @@ end
 RSpec.describe "Movies", type: :request do
   describe "POST /movies" do
     it "works!" do
-      post movies_path({movie: {title: "King Kong", rating: "G", description: nil, director: nil}})
-    end
-  end
-end
-
-RSpec.describe "Movies", type: :request do
-  describe "POST /movies" do
-    it "works!" do
       Movie.create!(id: 1, title: "Aladdin", rating: "G", description: nil, director: nil)
       delete movie_path({id: 1})
     end
@@ -133,3 +126,13 @@ RSpec.describe "Movies", type: :request do
     end
   end
 end
+
+RSpec.describe "Movies", type: :request do
+  describe "POST /movies" do
+    it "works!" do
+      post movies_path({movie: {title: "King Kong", rating: "G", description: nil, director: nil}})
+    end
+  end
+end
+
+
